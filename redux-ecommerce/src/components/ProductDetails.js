@@ -1,29 +1,33 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectedProduct } from '../redux/actions/productsActions'
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedProduct, removeSelectedProduct } from "../redux/actions/productsActions";
 
 const ProductDetails = () => {
-  const { productId } = useParams()
-  console.log(productId)
-  let product = useSelector(state => state.product)
-  const { image, title, price, category, description } = product
+    const { productId } = useParams();
+    let product = useSelector((state) => state.product);
+    const { image, title, price, category, description } = product;
+    const dispatch = useDispatch();
+    console.log(product);
+    const fetchProductDetail = async (id) => {
+        const response = await axios
+            .get(`https://fakestoreapi.com/products/${id}`)
+            .catch((err) => {
+            console.log("Err: ", err);
+            });
+        dispatch(selectedProduct(response.data));
+    };
 
-  const dispatch = useDispatch()
-  const fetchProductDetail = async (id) => {
-    const response = await axios
-          .get(`https://fakestoreapi.com/products/${id}`)
-          .catch(err => console.log(err))
-    console.log(response.data)
-    dispatch(selectedProduct(response.data))  
-  }
+    useEffect(() => {
+        if (productId && productId !== "") fetchProductDetail(productId);
 
-  useEffect(() => {
-    fetchProductDetail()
-  }, [productId])
+        return () => {
+            dispatch(removeSelectedProduct());
+        }
+    }, [productId]);
 
-  return (
+    return (
         <div className="ui grid container">
             {Object.keys(product).length === 0 ? (
                 <div className="ui active centered inline loader"></div>
@@ -54,7 +58,7 @@ const ProductDetails = () => {
                 </div>
             )}
         </div>
-  )
+    );
 }
 
 export default ProductDetails
