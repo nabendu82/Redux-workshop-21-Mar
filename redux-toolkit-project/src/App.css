@@ -1,0 +1,28 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@200;400;600;700&display=swap');
+
+:root {
+  --primary-color: #090e13;
+  --secondary-color: #18212a;
+  --font-primary:#ffffff;
+  --font-secondary: #73b5f3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Mali", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background: var(--primary-color);
+}
+
+.container {
+  margin: 0px 40px;
+}

@@ -1,37 +1,50 @@
-import { ActionTypes } from "../constants/action-types";
 import shopApi from '../../apis/shopApi';
+import { ActionTypes } from "../constants/action-types";
 
-export const fetchProducts = async () => {
-    return async function(dispatch){
+export const fetchProducts = () => {
+    return async function(dispatch) {
         try {
             const response = await shopApi.get("/products");
-            dispatch ({
+            dispatch({
                 type: ActionTypes.FETCH_PRODUCTS,
                 payload: response.data
-            })
-            
+            });
         } catch (error) {
             console.log(error);
         }
     }
-}
+};
 
-export const setProducts = products => {
+export const fetchProduct = id => {
+    return async function(dispatch) {
+        try {
+            const response = await shopApi.get(`/products/${id}`);
+            dispatch({
+                type: ActionTypes.SELECTED_PRODUCT,
+                payload: response.data
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+export const setProducts = (products) => {
     return {
         type: ActionTypes.SET_PRODUCTS,
-        payload: products
-    }
-}
+        payload: products,
+    };
+};
 
-export const selectedProduct = product => {
+export const selectedProduct = (product) => {
     return {
         type: ActionTypes.SELECTED_PRODUCT,
-        payload: product
-    }
-}
+        payload: product,
+    };
+};
 
 export const removeSelectedProduct = () => {
     return {
-        type: ActionTypes.REMOVE_SELECTED_PRODUCT
-    }
-}
+        type: ActionTypes.REMOVE_SELECTED_PRODUCT,
+    };
+};
